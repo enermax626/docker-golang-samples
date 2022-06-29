@@ -1,6 +1,17 @@
+FROM golang:latest AS builder
+
+WORKDIR /app
+
+COPY hello.go .
+
+RUN go build hello.go
+
+
 FROM hello-world:latest
 
-COPY /container-to-compile/hello .
+WORKDIR /app
+
+COPY --from=builder /app/hello .
 
 ENTRYPOINT [ "./hello" ]
 
